@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Stock exchange calculators</string>
+    <string name="appwidget_text">Обновление данных</string>
+    <string name="configure">Настройки</string>
+    <string name="add_widget">Add widget</string>
+    <string name="add_button">Сохранить</string>
+    <string name="add_radio_currency">Валюты</string>
+    <string name="add_radio_stock">Акции</string>
+</resources>
