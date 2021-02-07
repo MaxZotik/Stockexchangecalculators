@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.settings.ConstantValues;
+import com.stockexchange.Asset;
+import com.stockexchange.Stock;
 
 /**
  * The configuration screen for the {@link StockExchangeWidget StockExchangeWidget} AppWidget.
@@ -27,10 +29,12 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
             final Context context = StockExchangeWidgetConfigureActivity.this;
 
             // When the button is clicked, store the string locally
-            String nameText = mAppWidgetName.getText().toString();
-            String costText = mAppWidgetCost.getText().toString();
-            saveTitlePref(context, mAppWidgetId, "name", nameText);
-            saveTitlePref(context, mAppWidgetId, "cost", costText);
+            String name = mAppWidgetName.getText().toString();
+            String purchasePrice = mAppWidgetCost.getText().toString();
+
+            Stock stock = new Stock(name, Integer.parseInt(purchasePrice), 10, ConstantValues.get("STOCK_BROKER"), ConstantValues.get("STOCK_MARKET"));
+
+            saveTitlePref(context, mAppWidgetId, "stock", stock.toString());
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -49,6 +53,7 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
     }
 
     // Write the prefix to the SharedPreferences object for this widget
+
     static void saveTitlePref(Context context, int appWidgetId, String nameText, String text) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.putString(PREF_PREFIX_KEY + appWidgetId + nameText, text);
@@ -57,14 +62,14 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
 
     // Read the prefix from the SharedPreferences object for this widget.
     // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId, String name) {
+    static String loadTitlePref(Context context, int appWidgetId, String nameText) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        return prefs.getString(PREF_PREFIX_KEY + appWidgetId + name, null);
+        return prefs.getString(PREF_PREFIX_KEY + appWidgetId + nameText, null);
     }
 
-    static void deleteTitlePref(Context context, int appWidgetId, String name) {
+    static void deleteTitlePref(Context context, int appWidgetId, String nameText) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.remove(PREF_PREFIX_KEY + appWidgetId + name);
+        prefs.remove(PREF_PREFIX_KEY + appWidgetId + nameText);
         prefs.apply();
     }
 
@@ -95,8 +100,7 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
             return;
         }
 
-        mAppWidgetName.setText(loadTitlePref(StockExchangeWidgetConfigureActivity.this, mAppWidgetId, "came"));
-        mAppWidgetCost.setText(loadTitlePref(StockExchangeWidgetConfigureActivity.this, mAppWidgetId, "cost"));
+        mAppWidgetName.setText(loadTitlePref(StockExchangeWidgetConfigureActivity.this, mAppWidgetId, "stock"));
     }
 
     private static void init(){

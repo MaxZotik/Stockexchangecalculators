@@ -51,10 +51,10 @@ public abstract class Asset implements Serializable {
     @Override
     public abstract String toString();
 
-    protected static float mathSalePrice(String name, float purchasePrice, int quantity, float keyBroker, float keyMarket){
-        float sumBroker = Math.round(((purchasePrice * quantity) / 100 * keyBroker * 2) * 100) / 100;
-        float sumMarket = Math.round(((purchasePrice * quantity) / 100 * keyMarket * 2) * 100) / 100;
+    protected static float mathSalePrice(float purchasePrice, int quantity, float keyBroker, float keyMarket){
+        float sumBroker = (float) Math.round(((purchasePrice * quantity) / 100 * keyBroker * 2) * 100) / 100;
+        float sumMarket = (float) Math.round(((purchasePrice * quantity) / 100 * keyMarket * 2) * 100) / 100;
 
-        return ((purchasePrice * quantity) + sumBroker + sumMarket) / quantity;
+        return (float)Math.round((((purchasePrice * quantity) + sumBroker + sumMarket) / quantity) * 100) / 100;
     }
 }

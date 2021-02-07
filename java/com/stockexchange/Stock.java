@@ -11,13 +11,13 @@ public class Stock extends Asset implements Serializable {
 
     public Stock(String name, float purchasePrice, int quantity, float keyBroker,float keyMarket) {
         super(name,
-                mathSalePrice(name, purchasePrice, quantity, keyBroker, keyMarket),
+                mathSalePrice(purchasePrice, quantity, keyBroker, keyMarket),
                 purchasePrice,
                 quantity);
     }
 
     @Override
     public String toString() {
-        return getName() + "/n" + "Цена продажы " + getSalePrice();
+        return getName() + "\n" + "Цена продажи " + getSalePrice();
     }
 }
