@@ -14,8 +14,8 @@ public class StockExchangeWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = StockExchangeWidgetConfigureActivity.loadTitlePref(context, appWidgetId, "stock");
-        
+        CharSequence widgetText = StockExchangeWidgetConfigureActivity.loadTitlePref(context, appWidgetId, "object");
+
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.stock_exchange_widget);
 
@@ -36,7 +36,7 @@ public class StockExchangeWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         // When the user deletes the widget, delete the preference associated with it.
         for (int appWidgetId : appWidgetIds) {
-            StockExchangeWidgetConfigureActivity.deleteTitlePref(context, appWidgetId, "stock");
+            StockExchangeWidgetConfigureActivity.deleteTitlePref(context, appWidgetId, "object");
         }
     }
 

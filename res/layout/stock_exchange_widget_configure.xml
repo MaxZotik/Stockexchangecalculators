@@ -23,14 +23,12 @@
         <RadioButton android:id="@+id/currency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_radio_currency"
-            android:onClick="onRadioButtonClicked"/>
+            android:text="@string/add_radio_currency" />
 
         <RadioButton android:id="@+id/stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_radio_stock"
-            android:onClick="onRadioButtonClicked"/>
+            android:text="@string/add_radio_stock" />
 
     </RadioGroup>>
 

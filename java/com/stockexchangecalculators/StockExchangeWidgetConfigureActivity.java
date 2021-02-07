@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 import com.settings.ConstantValues;
 import com.stockexchange.Asset;
+import com.stockexchange.Currency;
 import com.stockexchange.Stock;
 
 /**
@@ -23,18 +25,16 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetName;
     EditText mAppWidgetCost;
+    RadioGroup mAppWidgetRadio;
+    Asset obj;
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = StockExchangeWidgetConfigureActivity.this;
 
             // When the button is clicked, store the string locally
-            String name = mAppWidgetName.getText().toString();
-            String purchasePrice = mAppWidgetCost.getText().toString();
 
-            Stock stock = new Stock(name, Integer.parseInt(purchasePrice), 10, ConstantValues.get("STOCK_BROKER"), ConstantValues.get("STOCK_MARKET"));
-
-            saveTitlePref(context, mAppWidgetId, "stock", stock.toString());
+            saveTitlePref(context, mAppWidgetId, "object", obj.toString());
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -84,7 +84,32 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
         setContentView(R.layout.stock_exchange_widget_configure);
         mAppWidgetName = (EditText) findViewById(R.id.appwidget_name);
         mAppWidgetCost = (EditText) findViewById(R.id.appwidget_cost);
+        mAppWidgetRadio = (RadioGroup)findViewById(R.id.radios);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
+
+        mAppWidgetRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                String name = mAppWidgetName.getText().toString();
+                String purchasePrice = mAppWidgetCost.getText().toString();
+                
+                if(name.equals("") && purchasePrice.equals("")) {
+                    System.out.println("XXXXXXXXXXXX");
+                }else{
+                    switch (checkedId) {
+                        case R.id.currency:
+                            obj = new Currency(name, Integer.parseInt(purchasePrice), 10, ConstantValues.get("CURRENCY_BROKER"), ConstantValues.get("CURRENCY_MARKET"));
+                            break;
+                        case R.id.stock:
+                            obj = new Stock(name, Integer.parseInt(purchasePrice), 10, ConstantValues.get("STOCK_BROKER"), ConstantValues.get("STOCK_MARKET"));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
 
         // Find the widget id from the intent.
         Intent intent = getIntent();
@@ -100,7 +125,7 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
             return;
         }
 
-        mAppWidgetName.setText(loadTitlePref(StockExchangeWidgetConfigureActivity.this, mAppWidgetId, "stock"));
+        mAppWidgetName.setText(loadTitlePref(StockExchangeWidgetConfigureActivity.this, mAppWidgetId, "object"));
     }
 
     private static void init(){

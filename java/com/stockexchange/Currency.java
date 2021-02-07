@@ -16,6 +16,6 @@ public class Currency extends Asset implements Serializable {
 
     @Override
     public String toString() {
-        return getName() + "/n" + "Цена продажи " + getSalePrice();
+        return getName() + "\n" + "Цена продажи " + getSalePrice();
     }
 }
