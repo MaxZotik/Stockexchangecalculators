@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.settings.ConstantValues;
 import com.stockexchange.Asset;
@@ -27,6 +28,7 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
     EditText mAppWidgetCost;
     RadioGroup mAppWidgetRadio;
     Asset obj;
+    //String radioName = "";
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -34,7 +36,21 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
 
             // When the button is clicked, store the string locally
 
-            saveTitlePref(context, mAppWidgetId, "object", obj.toString());
+            String name = mAppWidgetName.getText().toString();
+            String purchasePrice = mAppWidgetCost.getText().toString();
+
+                switch (mAppWidgetRadio.getCheckedRadioButtonId()) {
+                    case R.id.currency:
+                        obj = new Currency(name, Integer.parseInt(purchasePrice), 10, ConstantValues.get("CURRENCY_BROKER"), ConstantValues.get("CURRENCY_MARKET"));
+                        break;
+                    case R.id.stock:
+                        obj = new Stock(name, Integer.parseInt(purchasePrice), 10, ConstantValues.get("STOCK_BROKER"), ConstantValues.get("STOCK_MARKET"));
+                        break;
+                }
+
+                saveTitlePref(context, mAppWidgetId, "object", obj.toString());
+
+            //saveTitlePref(context, mAppWidgetId, "object", obj.toString());
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -86,31 +102,23 @@ public class StockExchangeWidgetConfigureActivity extends Activity {
         mAppWidgetCost = (EditText) findViewById(R.id.appwidget_cost);
         mAppWidgetRadio = (RadioGroup)findViewById(R.id.radios);
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
-
+/*
         mAppWidgetRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                String name = mAppWidgetName.getText().toString();
-                String purchasePrice = mAppWidgetCost.getText().toString();
-                
-                if(name.equals("") && purchasePrice.equals("")) {
-                    System.out.println("XXXXXXXXXXXX");
-                }else{
+
                     switch (checkedId) {
                         case R.id.currency:
-                            obj = new Currency(name, Integer.parseInt(purchasePrice), 10, ConstantValues.get("CURRENCY_BROKER"), ConstantValues.get("CURRENCY_MARKET"));
+                            radioName = "currency";
                             break;
                         case R.id.stock:
-                            obj = new Stock(name, Integer.parseInt(purchasePrice), 10, ConstantValues.get("STOCK_BROKER"), ConstantValues.get("STOCK_MARKET"));
-                            break;
-                        default:
+                            radioName = "stock";
                             break;
                     }
-                }
             }
         });
-
+*/
         // Find the widget id from the intent.
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
